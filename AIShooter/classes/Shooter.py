@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pygame
+
 from .Cords import Cords
 from .Movement import Movement
 

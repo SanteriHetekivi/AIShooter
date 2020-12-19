@@ -3,7 +3,6 @@ from __future__ import annotations
 import pygame
 import math
 
-from .Movement import Movement
 from .Cords import Cords
 from .Player import Player
 from .Timer import Timer
