@@ -21,6 +21,9 @@ class Cords():
         self.x = x
         self.y = y
 
+    def X(self: Cords) -> float:
+        return self.x
+
     def factor(self: Cords, factor: float) -> Cords:
         """Multiply cordinates with given factor.
 

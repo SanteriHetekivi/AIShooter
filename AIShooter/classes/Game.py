@@ -3,9 +3,9 @@ from __future__ import annotations
 import pygame
 import math
 
-from .Cords import Cords
-from .Player import Player
-from .Timer import Timer
+from .Helpers.Cords import Cords
+from .Elements.Player import Player
+from .Helpers.Timer import Timer
 
 
 class Game():
@@ -32,7 +32,7 @@ class Game():
         self._surface = pygame.display.set_mode(
             (self._resolution.x, self._resolution.y)
         )
-        self._player = Player(self._scale)
+        self._player = Player()
         self._running = False
         self._timer = Timer()
         self._init_fps()
@@ -166,6 +166,6 @@ class Game():
             else:
                 events.append(event)
         self._surface.fill((0, 0, 0))
-        self._player.frame(time_diff, events, self._surface)
+        self._player.frame(time_diff, events, self._surface, self._scale)
         pygame.display.update()
         return self
