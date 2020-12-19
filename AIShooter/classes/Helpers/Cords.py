@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+# Packages
 from typing import Optional
 
 
@@ -67,3 +68,30 @@ class Cords():
             bool: Are cordinates empty.
         """
         return (self.x == 0 and self.y == 0)
+
+    def __copy__(self: Cords) -> Cords:
+        """Copy cordinates.
+
+        Args:
+            self (Cords): Itself.
+
+        Returns:
+            Cords: Copy.
+        """
+        return Cords(self.x, self.y)
+
+    def same(self: Cords, cords: Cords) -> bool:
+        """Self and given cordinates are same?
+
+        Args:
+            self (Cords): Itself.
+            cords (Cords): Comparison.
+
+        Returns:
+            bool: Self and given cordinates are same?
+        """
+        return (
+            self.x == cords.x
+            and
+            self.y == cords.y
+        )

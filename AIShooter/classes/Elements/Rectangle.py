@@ -1,13 +1,17 @@
 from __future__ import annotations
 
+# Packages
 from typing import Optional
 import pygame
 
-from .Element import Element
+# Helpers
 from ..Helpers.Cords import Cords
 
+# Elements
+from .Moving import Moving
 
-class Rectangle(Element):
+
+class Rectangle(Moving):
     def __init__(self: Rectangle, width: float, height: float, x: float = 0.00, y: float = 0.00, speed: float = 1000.00, color: pygame.Color = pygame.Color(255, 255, 255)) -> Rectangle:
         """Initialize Rectangle game element.
 
@@ -23,12 +27,34 @@ class Rectangle(Element):
         Returns:
             Rectangle: Itself.
         """
-        Element.__init__(self, x, y, speed, color)
+        Moving.__init__(self, x, y, speed, color)
         self._rect = pygame.Rect(
             0, 0,
             width, height
         )
         self._update_rect()
+
+    def width(self: Rectangle) -> float:
+        """Width of the element.
+
+        Args:
+            self (Rectangle): Itself.
+
+        Returns:
+            float: Width of the element.
+        """
+        return self._rect.width
+
+    def height(self: Rectangle) -> float:
+        """Height of the element.
+
+        Args:
+            self (Rectangle): Itself.
+
+        Returns:
+            float: Height of the element.
+        """
+        return self._rect.height
 
     def _update_rect(self: Rectangle, clamp_rect: Optional[pygame.Rect] = None) -> pygame.Rect:
         """Update the rect.
@@ -71,7 +97,7 @@ class Rectangle(Element):
         Returns:
             Rectangle: Itself.
         """
-        Element._update_location(self, time_diff, screen_rect)
+        Moving._update_location(self, time_diff, screen_rect)
         self._update_rect(screen_rect)
         return self
 
@@ -86,6 +112,6 @@ class Rectangle(Element):
         Returns:
             Rectangle: Itself.
         """
-        Element._draw(self, surface, scale)
-        pygame.draw.rect(surface, (255, 255, 255), self._scaled_rect(scale))
+        Moving._draw(self, surface, scale)
+        pygame.draw.rect(surface, self._color, self._scaled_rect(scale))
         return self

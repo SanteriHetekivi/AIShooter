@@ -3,9 +3,16 @@ from __future__ import annotations
 import pygame
 import math
 
+# Exceptions
+from .Exceptions.End import End
+
+# Helpers
 from .Helpers.Cords import Cords
-from .Elements.Player import Player
 from .Helpers.Timer import Timer
+
+# Elements
+from .Elements.Screen import Screen
+from .Elements.Player import Player
 
 
 class Game():
@@ -32,9 +39,6 @@ class Game():
         self._surface = pygame.display.set_mode(
             (self._resolution.x, self._resolution.y)
         )
-        self._player = Player()
-        self._running = False
-        self._timer = Timer()
         self._init_fps()
         self._init_frame_limiter()
         pygame.init()
@@ -49,18 +53,31 @@ class Game():
             Game: Itself.
         """
 
-        # Set running.
-        self._running = True
-
         # Initialize counters and timers.
         self._init_fps()
         self._init_frame_limiter()
-        self._timer = Timer()
-
+        timer = Timer()
+        screen = Screen()
+        screen.add_child(
+            Player()
+        )
         # While running.
-        while self._running:
-            # Run actions on frame.
-            self._frame()
+        while True:
+           # Collect events.
+            events = []
+            for event in pygame.event.get():
+                events.append(event)
+            try:
+                screen._frame(
+                    timer.curr(True),
+                    events,
+                    self._surface,
+                    self._scale
+                )
+            except End as end:
+                print("Game ended: {0}".format(end))
+                break
+            pygame.display.update()
             # Limit framerate to given cap.
             self._frame_limiter()
             # Count and print FPS every second.
@@ -136,36 +153,3 @@ class Game():
             )
         self._frame_timer.start()
         return limit
-
-    def _update_time(self: Game) -> float:
-        """Update timer
-
-        Args:
-            self (Game): Itself.
-
-        Returns:
-            float: Time diff from last update.
-        """
-        return self._timer.curr(True)
-
-    def _frame(self: Game) -> Game:
-        """Run logic inside frame.
-
-        Args:
-            self (Game): Itself.
-
-        Returns:
-            Game: Itself.
-        """
-        time_diff = self._update_time()
-        events = []
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self._running = False
-                return
-            else:
-                events.append(event)
-        self._surface.fill((0, 0, 0))
-        self._player.frame(time_diff, events, self._surface, self._scale)
-        pygame.display.update()
-        return self

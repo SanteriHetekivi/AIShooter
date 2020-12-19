@@ -1,39 +1,70 @@
 from __future__ import annotations
 
-from typing import Optional
-
+# Helpers
 from .Cords import Cords
+from .Facing import Facing
 
 
-class Movement():
+class Movement(Facing):
     """Class for handeling movement.
     """
 
-    def __init__(self: Movement) -> Movement:
+    def __init__(self: Movement, up: bool = False, down: bool = False, left: bool = False, right: bool = False) -> Movement:
         """Initialize movement.
 
         Args:
             self (Movement): Itself.
+            up (bool, optional): Is default facing up. Defaults to False.
+            down (bool, optional): Is default facing down. Defaults to False.
+            left (bool, optional): Is default facing left. Defaults to False.
+            right (bool, optional): Is default facing right. Defaults to False.
 
         Returns:
             Movement: Itself.
         """
-        self.clear()
+        Facing.__init__(
+            self,
+            up,
+            down,
+            left,
+            right
+        )
+        self.facing = Facing(
+            up,
+            down,
+            left,
+            right
+        )
 
-    def clear(self: Movement) -> Movement:
-        """Clear movement.
+    @staticmethod
+    def FromFacing(facing: Facing) -> Movement:
+        """Create Movement from Facing.
+
+        Args:
+            facing (Facing): Create from this.
+
+        Returns:
+            Movement: Created Movement.
+        """
+        return Movement(
+            facing.up,
+            facing.down,
+            facing.left,
+            facing.right
+        )
+
+    def facing_as_movement(self: Movement) -> Movement:
+        """Current facing as a Movement.
 
         Args:
             self (Movement): Itself.
 
         Returns:
-            Movement: Itself.
+            Movement: Current facing as a Movement.
         """
-        self.up = False
-        self.down = False
-        self.left = False
-        self.right = False
-        return self
+        return Movement.FromFacing(
+            self.facing
+        )
 
     def cords(self: Movement) -> Cords:
         """Get movement cordinates.
@@ -55,15 +86,13 @@ class Movement():
             cords.y += 1
         return cords
 
-    def update_cords(self: Movement, cords: Cords, factor: float = 1.00, cords_min: Optional[Cords] = None, cords_max: Optional[Cords] = None) -> Cords:
+    def update_cords(self: Movement, cords: Cords, factor: float = 1.00) -> Cords:
         """Update given cordinates with movement cordinates.
 
         Args:
             self (Movement): Itself.
             cords (Cords): Cordinates to update.
             factor (float, optional): Multiply movement cordinates with this. Defaults to 1.00.
-            cords_min (Optional[Cords], optional): If given clamp cordinates to this minimum. Defaults to None.
-            cords_max (Optional[Cords], optional): If given clamp cordinates to this maximum. Defaults to None.
 
         Returns:
             Cords: Updated cordinates.
@@ -71,11 +100,13 @@ class Movement():
         movement_cords = self.cords()
         if(movement_cords.empty()):
             return cords
+        self.facing.set(
+            self.up,
+            self.down,
+            self.left,
+            self.right
+        )
         movement_cords.factor(factor)
         cords.x += movement_cords.x
         cords.y += movement_cords.y
-        cords.clamp(
-            cords_min,
-            cords_max
-        )
         return cords
