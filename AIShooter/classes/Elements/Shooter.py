@@ -3,6 +3,9 @@ from __future__ import annotations
 # Packages
 import pygame
 
+# Helpers
+from ..Helpers.Cords import Cords
+
 # Elements
 from .Rectangle import Rectangle
 from .Bullet import Bullet
@@ -28,11 +31,12 @@ class Shooter(Rectangle):
         Rectangle.__init__(self, 10, 10, x, y, speed, color)
         self._bullets = []
 
-    def _shoot(self: Shooter) -> Shooter:
+    def _shoot(self: Shooter, scale: Cords) -> Shooter:
         """Shoot bullet.
 
         Args:
             self (Shooter): Itself.
+            scale (Cords): Scale.
 
         Returns:
             Shooter: Itself.
@@ -42,7 +46,7 @@ class Shooter(Rectangle):
             Bullet(
                 movement.update_cords(
                     self._cords.__copy__(),
-                    self._rect.width*1.5
+                    self.max_radius(scale)*5
                 ),
                 movement
             )

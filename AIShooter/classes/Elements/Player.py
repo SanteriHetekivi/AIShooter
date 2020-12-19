@@ -67,5 +67,5 @@ class Player(Shooter):
                     self._movement.down = False
         Shooter._frame(self, time_diff, events, surface, scale)
         if shoot:
-            self._shoot()
+            self._shoot(scale)
         return self

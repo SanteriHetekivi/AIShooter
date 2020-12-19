@@ -101,6 +101,19 @@ class Rectangle(Moving):
         self._update_rect(screen_rect)
         return self
 
+    def max_radius(self: Rectangle, scale: Cords = Cords(1.00, 1.00)) -> float:
+        """Max possible radius.
+
+        Args:
+            self (Rectangle): Itself.
+            scale (Cords, optional): Scaling. Defaults to Cords(1.00, 1.00).
+
+        Returns:
+            float: Max possible radius.
+        """
+        rect = self._scaled_rect(scale)
+        return max(rect.width, rect.height)/2
+
     def _draw(self: Rectangle, surface: pygame.Surface, scale: Cords) -> Rectangle:
         """Draw element to given surface.
 

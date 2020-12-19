@@ -19,7 +19,7 @@ class Game():
     """Game class that houses main game logic.
     """
 
-    def __init__(self: Game, width: int = 800, height: int = 600) -> Game:
+    def __init__(self: Game, width: int = 1920, height: int = 1080) -> Game:
         """Initialise new game.
 
         Args:
@@ -33,8 +33,8 @@ class Game():
         self._fps_cap = 360
         self._resolution = Cords(width, height)
         self._scale = Cords(
-            self._resolution.x/800,
-            self._resolution.y/600
+            self._resolution.x/1920,
+            self._resolution.y/1080
         )
         self._surface = pygame.display.set_mode(
             (self._resolution.x, self._resolution.y)
